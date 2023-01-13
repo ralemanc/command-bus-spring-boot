@@ -91,7 +91,7 @@
     <distributionManagement>
         <repository>
             <id>EPO_REPO</id>
-            <url>http://prod.repo.internal.epo.org/nexus/</url>
+            <url>http://prod.repo.internal.epo.org/nexus/content/groups/development</url>
         </repository>
     </distributionManagement>
 
