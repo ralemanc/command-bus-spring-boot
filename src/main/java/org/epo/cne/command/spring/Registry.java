@@ -26,7 +26,7 @@ public final class Registry {
     public Registry(final ApplicationContext applicationContext) {
         String[] names = applicationContext.getBeanNamesForType(CommandHandler.class);
         for (String name : names) {
-            register(applicationContext, name);
+            this.register(applicationContext, name);
         }
     }
 
@@ -41,12 +41,12 @@ public final class Registry {
         Class<?>[] generics = GenericTypeResolver.resolveTypeArguments(handlerClass, CommandHandler.class);
         Class<? extends Command> commandType = (Class<? extends Command>) generics[1];
 
-        providerMap.put(commandType, new CommandProvider(applicationContext, handlerClass));
+        this.providerMap.put(commandType, new CommandProvider(applicationContext, handlerClass));
     }
 
     @SuppressWarnings("unchecked")
     <R, C extends Command<R>> CommandHandler<R, C> get(final Class<C> commandClass) {
-        return providerMap.get(commandClass).get();
+        return this.providerMap.get(commandClass).get();
     }
 
 }
