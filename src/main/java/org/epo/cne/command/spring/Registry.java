@@ -1,6 +1,6 @@
 package org.epo.cne.command.spring;
 
-import org.epo.cne.sharedkernel.command.core.Command;
+import org.epo.cne.sharedkernel.command.Command;
 import org.epo.cne.sharedkernel.command.core.CommandHandler;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.GenericTypeResolver;
@@ -45,7 +45,7 @@ public final class Registry {
     }
 
     @SuppressWarnings("unchecked")
-    <R, C extends Command<R>> CommandHandler<R, C> get(final Class<C> commandClass) {
+    <R, C extends Command> CommandHandler<R, C> get(final Class<C> commandClass) {
         return this.providerMap.get(commandClass).get();
     }
 

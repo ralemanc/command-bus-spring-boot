@@ -1,6 +1,6 @@
 package org.epo.cne.command.spring;
 
-import org.epo.cne.sharedkernel.command.core.Command;
+import org.epo.cne.sharedkernel.command.Command;
 import org.epo.cne.sharedkernel.command.core.CommandBus;
 import org.epo.cne.sharedkernel.command.core.CommandHandler;
 import org.springframework.context.annotation.Bean;
@@ -30,7 +30,7 @@ public class SpringCommandBus implements CommandBus {
      * @return the result of the command's execution
      */
     @Override
-    public <R, C extends Command<R>> R execute(final C command) {
+    public <R, C extends Command> R execute(final C command) {
         CommandHandler<R, C> commandHandler = (CommandHandler<R, C>) this.registry.get(command.getClass());
         return commandHandler.handle(command);
     }
