@@ -37,7 +37,7 @@ public final class Registry {
      * @param name               of the bean as a command handler
      */
     private void register(final ApplicationContext applicationContext, final String name) {
-        Class<CommandHandler<?, ?>> handlerClass = (Class<CommandHandler<?, ?>>) applicationContext.getType(name);
+        Class<CommandHandler<?>> handlerClass = (Class<CommandHandler<?>>) applicationContext.getType(name);
         Class<?>[] generics = GenericTypeResolver.resolveTypeArguments(handlerClass, CommandHandler.class);
         Class<? extends Command> commandType = (Class<? extends Command>) generics[1];
 
@@ -45,7 +45,7 @@ public final class Registry {
     }
 
     @SuppressWarnings("unchecked")
-    <R, C extends Command> CommandHandler<R, C> get(final Class<C> commandClass) {
+    <C extends Command> CommandHandler<C> get(final Class<C> commandClass) {
         return this.providerMap.get(commandClass).get();
     }
 

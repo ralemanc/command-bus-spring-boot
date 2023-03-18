@@ -10,7 +10,7 @@ import org.springframework.context.ApplicationContext;
  * @author Enrique Medina Montenegro (em54029)
  */
 @SuppressWarnings("unchecked")
-class CommandProvider<H extends CommandHandler<?, ?>> {
+class CommandProvider<H extends CommandHandler<?>> {
 
     private final ApplicationContext applicationContext;
     private final Class<H> type;

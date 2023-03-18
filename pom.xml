@@ -7,25 +7,30 @@
     <parent>
         <groupId>org.epo.common.maven.poms</groupId>
         <artifactId>epo-corporate-pom</artifactId>
-        <version>5.0.25</version>
+        <version>5.0.29</version>
     </parent>
-         
+
     <groupId>org.epo.cne.command</groupId>
     <artifactId>command-bus-spring-boot</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>CLOUD-NATIVE-ENGINEERING - Command Bus with Spring</name>
     <description>A Command bus implementation that uses Spring's Bean registry to execute commands</description>
 
     <properties>
+        <java.version>17</java.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <spring-framework-bom.version>6.0.3</spring-framework-bom.version>
+        <spring-framework-bom.version>6.0.6</spring-framework-bom.version>
 
-        <shared-kernel-command-bus.version>1.0-SNAPSHOT</shared-kernel-command-bus.version>
+        <shared-kernel-command-bus.version>1.0.0</shared-kernel-command-bus.version>
+
+        <versions-maven-plugin.version>2.15.0</versions-maven-plugin.version>
+        <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+        <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -63,9 +68,18 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
-                <version>2.14.2</version>
+                <version>${versions-maven-plugin.version}</version>
                 <executions>
                     <execution>
                         <phase>process-sources</phase>
@@ -81,7 +95,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.2.1</version>
+                <version>${maven-source-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>

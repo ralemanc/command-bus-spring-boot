@@ -30,9 +30,9 @@ public class SpringCommandBus implements CommandBus {
      * @return the result of the command's execution
      */
     @Override
-    public <R, C extends Command> R execute(final C command) {
-        CommandHandler<R, C> commandHandler = (CommandHandler<R, C>) this.registry.get(command.getClass());
-        return commandHandler.handle(command);
+    public <C extends Command> void execute(final C command) {
+        CommandHandler<C> commandHandler = (CommandHandler<C>) this.registry.get(command.getClass());
+        commandHandler.handle(command);
     }
 
 }
