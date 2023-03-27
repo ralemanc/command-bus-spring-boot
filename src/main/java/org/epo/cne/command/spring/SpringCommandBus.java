@@ -27,7 +27,6 @@ public class SpringCommandBus implements CommandBus {
      * Delegates the handling of the command to the corresponding {@link Bean} from Spring.
      *
      * @param command the command object
-     * @return the result of the command's execution
      */
     @Override
     public <C extends Command> void execute(final C command) {

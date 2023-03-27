@@ -12,7 +12,7 @@
 
     <groupId>org.epo.cne.command</groupId>
     <artifactId>command-bus-spring-boot</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
     <name>CLOUD-NATIVE-ENGINEERING - Command Bus with Spring</name>
@@ -26,7 +26,7 @@
 
         <spring-framework-bom.version>6.0.6</spring-framework-bom.version>
 
-        <shared-kernel-command-bus.version>1.0.0</shared-kernel-command-bus.version>
+        <shared-kernel-command-bus.version>1.0.1</shared-kernel-command-bus.version>
 
         <versions-maven-plugin.version>2.15.0</versions-maven-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
