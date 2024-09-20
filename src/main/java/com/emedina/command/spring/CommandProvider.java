@@ -1,6 +1,6 @@
-package org.epo.cne.command.spring;
+package com.emedina.command.spring;
 
-import org.epo.cne.sharedkernel.command.core.CommandHandler;
+import com.emedina.sharedkernel.command.core.CommandHandler;
 import org.springframework.context.ApplicationContext;
 
 /**
