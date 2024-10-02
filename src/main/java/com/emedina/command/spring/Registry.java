@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * A registry that holds the mapping between a command and its handler using Spring's {@link ApplicationContext}.
  *
- * @author Enrique Medina Montenegro (em54029)
+ * @author Enrique Medina Montenegro
  * @see CommandHandler
  */
 public final class Registry {
