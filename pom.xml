@@ -18,9 +18,13 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <spring-framework-bom.version>6.1.13</spring-framework-bom.version>
+        <spring-framework-bom.version>6.2.1</spring-framework-bom.version>
 
         <shared-kernel-command-bus.version>1.0.0</shared-kernel-command-bus.version>
+
+        <!-- Test -->
+        <junit-jupiter.version>5.11.3</junit-jupiter.version>
+        <assertj.version>3.26.3</assertj.version>
 
         <versions-maven-plugin.version>2.17.1</versions-maven-plugin.version>
         <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
@@ -61,25 +65,16 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.11.3</version>
+            <version>${junit-jupiter.version}</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.24.2</version> <!-- Upgrade to the latest version -->
+            <version>${assertj.version}</version>
             <scope>test</scope>
         </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.30</version>
-            <scope>test</scope>
-        </dependency>
-
-
     </dependencies>
 
     <build>
@@ -105,7 +100,7 @@
                 <goals>
                     <goal>update-parent</goal>
                     <goal>update-properties</goal>
-                    <goal>update-dependencies</goal>
+                    <!--goal>update-dependencies</goal-->
                 </goals>
             </plugin>
 

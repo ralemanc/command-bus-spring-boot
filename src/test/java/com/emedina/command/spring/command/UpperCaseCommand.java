@@ -1,12 +1,7 @@
 package com.emedina.command.spring.command;
 
 import com.emedina.sharedkernel.command.Command;
-import lombok.Builder;
-import lombok.Getter;
 
-@Builder
-@Getter
-public class UpperCaseCommand implements Command {
+public record UpperCaseCommand (String text) implements Command {
 
-    private String text;
 }

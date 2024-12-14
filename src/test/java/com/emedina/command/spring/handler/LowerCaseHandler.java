@@ -8,6 +8,6 @@ public class LowerCaseHandler implements CommandHandler<LowerCaseCommand> {
     @Override
     public void handle(final LowerCaseCommand command) {
 
-        System.out.print(command.getText().toLowerCase());
+        System.out.print(command.text().toLowerCase());
     }
 }

@@ -1,7 +1,5 @@
 package com.emedina.command.spring;
 
-import static org.assertj.core.api.Assertions.*;
-
 import com.emedina.command.spring.command.LowerCaseCommand;
 import com.emedina.command.spring.command.UpperCaseCommand;
 import org.junit.jupiter.api.Test;
@@ -11,6 +9,8 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringJUnitConfig
 @ContextConfiguration(classes = SpringCommandBusConfiguration.class)
@@ -22,7 +22,7 @@ class SpringCommandBusTest {
     @Test
     void runLowerCaseCommand() {
         // Arrange
-        final var lowerCaseCommand = LowerCaseCommand.builder().text("Spring TEST Command").build();
+        final var lowerCaseCommand = new LowerCaseCommand("Spring Command Bus Command TEST");
 
         final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
         System.setOut(new PrintStream(myOut));
@@ -32,13 +32,13 @@ class SpringCommandBusTest {
 
         // Assert
         final String standardOutput = myOut.toString();
-        assertThat(standardOutput).isEqualTo("spring test command");
+        assertThat(standardOutput).isEqualTo("spring command bus command test");
     }
 
     @Test
     void runUpperCaseCommand() {
         // Arrange
-        final var upperCaseCommand = UpperCaseCommand.builder().text("Spring TEST Command").build();
+        final var upperCaseCommand = new UpperCaseCommand("Spring Command Bus Command TEST");
         final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
         System.setOut(new PrintStream(myOut));
 
@@ -47,6 +47,6 @@ class SpringCommandBusTest {
 
         // Assert
         final String standardOutput = myOut.toString();
-        assertThat(standardOutput).isEqualTo("SPRING TEST COMMAND");
+        assertThat(standardOutput).isEqualTo("SPRING COMMAND BUS COMMAND TEST");
     }
 }
