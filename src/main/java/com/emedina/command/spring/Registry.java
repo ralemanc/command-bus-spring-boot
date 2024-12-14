@@ -6,6 +6,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.GenericTypeResolver;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,38 +17,25 @@ import java.util.Map;
  */
 public final class Registry {
 
-    private Map<Class<? extends Command>, CommandProvider> providerMap = new HashMap<>();
+    private final Map<Class< ? extends Command>, CommandHandler<? extends Command>> commandHandlerMap = new HashMap<>();
 
     /**
      * Constructor-based dependency injection.
      *
-     * @param applicationContext Spring's application context
+     * @param commandHandlers Spring's application context
      */
-    public Registry(final ApplicationContext applicationContext) {
-        String[] names = applicationContext.getBeanNamesForType(CommandHandler.class);
-        for (String name : names) {
-            this.register(applicationContext, name);
+    public Registry(final List<CommandHandler<? extends Command>> commandHandlers) {
+        for (final CommandHandler<? extends Command> commandHandler : commandHandlers) {
+            Class<?>[] generics = GenericTypeResolver.resolveTypeArguments(commandHandler.getClass(), CommandHandler.class);
+            Class<? extends Command> commandType = (Class<? extends Command>) generics[0];
+            this.commandHandlerMap.put(commandType, commandHandler);
         }
     }
 
-    /**
-     * Looks up the name of the Bean (as a {@link CommandHandler}) in Spring's application context.
-     *
-     * @param applicationContext Spring's application context
-     * @param name               of the bean as a command handler
-     */
-    private void register(final ApplicationContext applicationContext, final String name) {
-        Class<CommandHandler<?>> handlerClass = (Class<CommandHandler<?>>) applicationContext.getType(name);
-        Class<?>[] generics = GenericTypeResolver.resolveTypeArguments(handlerClass, CommandHandler.class);
-        //TODO: Check the right value 1 or 0 for generics[]
-        Class<? extends Command> commandType = (Class<? extends Command>) generics[0];
-
-        this.providerMap.put(commandType, new CommandProvider(applicationContext, handlerClass));
-    }
 
     @SuppressWarnings("unchecked")
     <C extends Command> CommandHandler<C> get(final Class<C> commandClass) {
-        return this.providerMap.get(commandClass).get();
+        return (CommandHandler<C>) this.commandHandlerMap.get(commandClass);
     }
 
 }
