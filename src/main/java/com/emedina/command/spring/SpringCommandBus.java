@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
  *
  * @author Enrique Medina Montenegro
  */
-public class SpringCommandBus implements CommandBus {
+class SpringCommandBus implements CommandBus {
 
     private final Registry registry;
 

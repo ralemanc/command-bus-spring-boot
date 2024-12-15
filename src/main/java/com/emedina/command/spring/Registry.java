@@ -15,7 +15,7 @@ import java.util.Map;
  * @author Enrique Medina Montenegro
  * @see CommandHandler
  */
-public final class Registry {
+final class Registry {
 
     private final Map<Class< ? extends Command>, CommandHandler<? extends Command>> commandHandlerMap = new HashMap<>();
 
