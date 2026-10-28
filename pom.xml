@@ -6,11 +6,17 @@
     <groupId>io.github.emedina</groupId>
     <artifactId>command-bus-spring-boot</artifactId>
     <version>1.0.0</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <name>Command Bus with Spring</name>
     <description>A Command bus implementation that uses Spring's Bean registry to execute commands</description>
     <url>https://github.com/emedina/command-bus-spring-boot</url>
+
+    <modules>
+        <module>command-bus-spring-boot-core</module>
+        <module>command-bus-spring-boot-autoconfigure</module>
+        <module>command-bus-spring-boot-starter</module>
+    </modules>
 
     <developers>
         <developer>
@@ -39,19 +45,12 @@
         <maven.compiler.target>25</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <spring-framework-bom.version>7.0.2</spring-framework-bom.version>
-
-        <shared-kernel-command-bus.version>1.0.0</shared-kernel-command-bus.version>
+        <spring-boot-dependencies.version>4.1.1</spring-boot-dependencies.version>
 
         <versions-maven-plugin.version>2.20.1</versions-maven-plugin.version>
         <maven-source-plugin.version>3.4.0</maven-source-plugin.version>
         <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
 
-        <!-- Test Dependencies -->
-        <junit-jupiter.version>6.0.2</junit-jupiter.version>
-        <mockito.version>5.21.0</mockito.version>
-        <assertj.version>3.27.6</assertj.version>
-        <slf4j.version>2.0.17</slf4j.version>
 
         <!-- Plugins -->
         <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
@@ -64,69 +63,27 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-framework-bom</artifactId>
-                <version>${spring-framework-bom.version}</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot-dependencies.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>io.github.emedina</groupId>
+                <artifactId>command-bus-spring-boot-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.github.emedina</groupId>
+                <artifactId>command-bus-spring-boot-autoconfigure</artifactId>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
 
-    <dependencies>
-        <dependency>
-            <groupId>io.github.emedina</groupId>
-            <artifactId>shared-kernel-command-bus</artifactId>
-            <version>${shared-kernel-command-bus.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Test Dependencies -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>${junit-jupiter.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>${mockito.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-junit-jupiter</artifactId>
-            <version>${mockito.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>${assertj.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-    </dependencies>
 
     <build>
         <plugins>
