@@ -1,52 +1,92 @@
 package com.emedina.command.spring;
 
-import com.emedina.command.spring.command.LowerCaseCommand;
-import com.emedina.command.spring.command.UpperCaseCommand;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@SpringJUnitConfig
-@ContextConfiguration(classes = SpringCommandBusConfiguration.class)
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import com.emedina.command.spring.fixtures.TestCommand;
+import com.emedina.command.spring.fixtures.TestCommandHandler;
+
+/**
+ * Unit tests for SpringCommandBus.
+ * 
+ * @author Enrique Medina Montenegro
+ */
+@ExtendWith(MockitoExtension.class)
+@DisplayName("SpringCommandBus")
 class SpringCommandBusTest {
 
-    @Autowired
-    SpringCommandBus commandBus;
+    @Mock
+    private Registry registry;
 
-    @Test
-    void runLowerCaseCommand() {
-        // Arrange
-        final var lowerCaseCommand = new LowerCaseCommand("Spring Command Bus Command TEST");
+    private SpringCommandBus commandBus;
 
-        final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(myOut));
-
-        // Act
-        this.commandBus.execute(lowerCaseCommand);
-
-        // Assert
-        final String standardOutput = myOut.toString();
-        assertThat(standardOutput).isEqualTo("spring command bus command test");
+    @BeforeEach
+    void setUp() {
+        // given
+        commandBus = new SpringCommandBus(registry);
     }
 
     @Test
-    void runUpperCaseCommand() {
-        // Arrange
-        final var upperCaseCommand = new UpperCaseCommand("Spring Command Bus Command TEST");
-        final ByteArrayOutputStream myOut = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(myOut));
+    @DisplayName("should execute command successfully when handler exists")
+    void shouldExecuteCommandSuccessfully() {
+        // given
+        TestCommand command = new TestCommand("test message");
+        TestCommandHandler handler = new TestCommandHandler();
+        when(registry.get(TestCommand.class)).thenReturn(handler);
 
-        // Act
-        this.commandBus.execute(upperCaseCommand);
+        // when
+        commandBus.execute(command);
 
-        // Assert
-        final String standardOutput = myOut.toString();
-        assertThat(standardOutput).isEqualTo("SPRING COMMAND BUS COMMAND TEST");
+        // then
+        verify(registry).get(TestCommand.class);
+        assertThat(handler.wasExecuted()).isTrue();
+        assertThat(handler.getLastCommand()).isEqualTo(command);
+    }
+
+    @Test
+    @DisplayName("should delegate to registry to get handler")
+    void shouldDelegateToRegistryToGetHandler() {
+        // given
+        TestCommand command = new TestCommand("test message");
+        TestCommandHandler handler = new TestCommandHandler();
+        when(registry.get(TestCommand.class)).thenReturn(handler);
+
+        // when
+        commandBus.execute(command);
+
+        // then
+        verify(registry).get(TestCommand.class);
+    }
+
+    @Test
+    @DisplayName("should throw exception when registry returns null handler")
+    void shouldThrowExceptionWhenRegistryReturnsNullHandler() {
+        // given
+        TestCommand command = new TestCommand("test message");
+        when(registry.get(TestCommand.class)).thenReturn(null);
+
+        // when/then
+        assertThatThrownBy(() -> commandBus.execute(command))
+            .isInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    @DisplayName("should throw exception when command is null")
+    void shouldThrowExceptionWhenCommandIsNull() {
+        // given
+        TestCommand nullCommand = null;
+
+        // when/then
+        assertThatThrownBy(() -> commandBus.execute(nullCommand))
+            .isInstanceOf(NullPointerException.class);
     }
 }
