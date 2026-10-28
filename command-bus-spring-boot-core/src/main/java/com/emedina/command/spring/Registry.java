@@ -1,59 +1,43 @@
 package com.emedina.command.spring;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.core.GenericTypeResolver;
-
+import org.apache.commons.lang3.reflect.TypeUtils;
 import com.emedina.sharedkernel.command.Command;
 import com.emedina.sharedkernel.command.core.CommandHandler;
 
 /**
- * A registry that holds the mapping between a command and its handler using Spring's {@link ApplicationContext}.
+ * A registry that holds the mapping between a command and its handler.
  *
  * @author Enrique Medina Montenegro
  * @see CommandHandler
  */
 public final class Registry {
 
-    private final Map<Class<? extends Command>, CommandProvider<?>> providerMap = new HashMap<>();
+    private final Map<Class<? extends Command>, CommandHandler<? extends Command>> providerMap = new HashMap<>();
 
     /**
      * Constructor-based dependency injection.
      *
-     * @param applicationContext Spring's application context
+     * @param commandHandlers CommandHandlers list
      */
-    public Registry(final ApplicationContext applicationContext) {
-        String[] names = applicationContext.getBeanNamesForType(CommandHandler.class);
-        for (String name : names) {
-            this.register(applicationContext, name);
+    public Registry(final List<CommandHandler<? extends Command>> commandHandlers) {
+        for (final CommandHandler<? extends Command> commandHandler : commandHandlers) {
+            final var types = TypeUtils.getTypeArguments(commandHandler.getClass(), CommandHandler.class);
+            if (types == null || types.isEmpty()) {
+                throw new IllegalStateException("Could not resolve command type for handler: " + commandHandler.getClass().getName());
+            }
+            final var commandType = (Class<? extends Command>) types.get(CommandHandler.class.getTypeParameters()[0]);
+            this.providerMap.put(commandType, commandHandler);
         }
     }
 
-    /**
-     * Looks up the name of the Bean (as a {@link CommandHandler}) in Spring's application context.
-     *
-     * @param applicationContext Spring's application context
-     * @param name               of the bean as a command handler
-     */
-    @SuppressWarnings("unchecked")
-    private void register(final ApplicationContext applicationContext, final String name) {
-        Class<CommandHandler<?>> handlerClass = (Class<CommandHandler<?>>) applicationContext.getType(name);
-        Class<?>[] generics = GenericTypeResolver.resolveTypeArguments(handlerClass, CommandHandler.class);
-
-        if (generics == null || generics.length == 0) {
-            throw new IllegalStateException("Could not resolve command type for handler: " + name);
-        }
-
-        Class<? extends Command> commandType = (Class<? extends Command>) generics[0];
-        this.providerMap.put(commandType, new CommandProvider<>(applicationContext, handlerClass));
-    }
 
     @SuppressWarnings("unchecked")
     <C extends Command> CommandHandler<C> get(final Class<C> commandClass) {
-        CommandProvider<?> provider = this.providerMap.get(commandClass);
-        return (CommandHandler<C>) provider.get();
+        return (CommandHandler<C>) this.providerMap.get(commandClass);
     }
 
 }
