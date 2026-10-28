@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>io.github.emedina</groupId>
+        <artifactId>command-bus-spring-boot</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>command-bus-spring-boot-starter</artifactId>
+    <packaging>jar</packaging>
+
+    <name>Command Bus with Spring Starter</name>
+    <description>A Command bus implementation that uses Spring's Bean registry to execute commands</description>
+    <url>https://github.com/emedina/command-bus-spring-boot</url>
+
+    <developers>
+        <developer>
+            <id>emedina</id>
+            <name>Enrique Medina Montenegro</name>
+            <email>enrique@medinamontenegro.com</email>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/emedina/command-bus-spring-boot.git</connection>
+        <developerConnection>scm:git:ssh://github.com:emedina/command-bus-spring-boot.git</developerConnection>
+        <url>https://github.com/emedina/command-bus-spring-boot</url>
+    </scm>
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.github.emedina</groupId>
+            <artifactId>command-bus-spring-boot-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.emedina</groupId>
+            <artifactId>command-bus-spring-boot-autoconfigure</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+    </dependencies>
+
+</project>
